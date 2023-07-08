@@ -18,6 +18,12 @@ export default defineConfig({
       name: '首页',
       path: '/home',
       component: './Home',
+      layout: false,
+    },
+    {
+      path: '/login',
+      component: './Login',
+      layout: false,
     },
     {
       name: '权限演示',

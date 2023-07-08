@@ -38,7 +38,7 @@ export default defineConfig({
   ],
   proxy: {
     '/api': {
-        target: 'http://localhost:8888',
+        target: 'http://192.168.31.118:8888',
         changeOrigin: true,
         pathRewrite: {}
     }

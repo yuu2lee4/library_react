@@ -12,13 +12,12 @@ export default defineConfig({
   routes: [
     {
       path: '/',
-      redirect: '/home',
-    },
-    {
-      name: '首页',
-      path: '/home',
-      component: './Home',
+      component: '@/layouts/index',
       layout: false,
+      routes: [
+        { path: '/', component: './Home' },
+        { path: '/user', component: './User' },
+      ],
     },
     {
       path: '/login',

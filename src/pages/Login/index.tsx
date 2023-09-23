@@ -1,6 +1,11 @@
+import { Input } from 'antd';
+import styles from './index.less';
+
 const LoginPage: React.FC = () => {
   return (
-    <div>login</div>
+    <div className={styles.container}>
+      <Input placeholder="Basic usage" />
+    </div>
   );
 };
 

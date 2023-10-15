@@ -2,11 +2,11 @@
   "private": true,
   "author": "yuli <yul4@knownsec.com>",
   "scripts": {
-    "dev": "max dev",
     "build": "max build",
+    "dev": "max dev",
     "format": "prettier --cache --write .",
-    "prepare": "husky install",
     "postinstall": "max setup",
+    "prepare": "husky install",
     "setup": "max setup",
     "start": "npm run dev"
   },
@@ -14,7 +14,8 @@
     "@ant-design/icons": "^5.2.6",
     "@ant-design/pro-components": "^2.6.21",
     "@umijs/max": "^4.0.81",
-    "antd": "^5.9.1"
+    "antd": "^5.9.1",
+    "js-cookie": "^3.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.21",

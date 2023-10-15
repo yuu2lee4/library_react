@@ -9,6 +9,7 @@ export default defineConfig({
   layout: {
     title: '@umijs/max',
   },
+  metas: [{ name: 'referrer', content: 'no-referrer' }],
   routes: [
     {
       path: '/',
@@ -37,11 +38,10 @@ export default defineConfig({
   ],
   proxy: {
     '/api': {
-        target: 'http://192.168.31.118:8888',
-        changeOrigin: true,
-        pathRewrite: {}
-    }
+      target: 'http://192.168.31.118:8888',
+      changeOrigin: true,
+      pathRewrite: {},
+    },
   },
   npmClient: 'pnpm',
 });
-

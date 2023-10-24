@@ -15,9 +15,11 @@
     "@ant-design/pro-components": "^2.6.21",
     "@umijs/max": "^4.0.81",
     "antd": "^5.9.1",
+    "dayjs": "^1.11.10",
     "js-cookie": "^3.0.5"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.5",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "husky": "^8.0.3",

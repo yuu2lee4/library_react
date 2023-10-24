@@ -1,4 +1,23 @@
 .container {
   width: 1244px;
   margin: 20px auto;
+
+  .book {
+    position: relative;
+    overflow: hidden;
+
+    .card {
+      width: 236px;
+    }
+
+    .borrowBtn {
+      position: absolute;
+      left: 12px;
+      top: -24px;
+    }
+
+    &:hover .borrowBtn {
+      top: 12px;
+    }
+  }
 }

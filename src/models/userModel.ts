@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 interface User {
   name: string;
+  borrowedBooks: any[];
 }
 
 export default function UserModel() {
@@ -18,30 +19,36 @@ export default function UserModel() {
         password: password,
       },
     });
-    setUser({ name: res.data.name });
+    setUser(res.data);
     Cookies.set('isLogin', 'true');
   };
 
-  const initialUser = async () => {
-    console.log(Cookies.get('isLogin'));
-    if (user === null && Cookies.get('isLogin')) {
+  const getUser = async () => {
+    // 判断cookie中用户是否已经登录。
+    // 如果已经登录，需要请求接口 获取用户信息
+    if (Cookies.get('isLogin')) {
       const res = await request('/api/user', {
         method: 'get',
       });
-      setUser({ name: res.data.name });
+      setUser(res.data);
     }
   };
 
+  // 第一次进入页面或者刷新进入页面时，需要获取用户信息，判断是否登录。
   useEffect(() => {
-    initialUser();
+    getUser();
   }, []);
 
-  const logout = function () {
-    // 清除cookie
-    document.cookie = '';
-    // 设置user为null
-    setUser(null);
+  const logout = async function () {
+    const res = await request('/api/user/logout');
+    console.log(res);
+    if (res.data) {
+      // 清除cookie
+      Cookies.remove('isLogin');
+      // 设置user为null
+      setUser(null);
+    }
   };
 
-  return { user, login, logout };
+  return { user, login, logout, getUser };
 }

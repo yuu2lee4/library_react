@@ -1,6 +1,6 @@
-import { request } from '@umijs/max';
+import { request, useModel } from '@umijs/max';
 import type { PaginationProps } from 'antd';
-import { Card, Pagination, Space } from 'antd';
+import { Button, Card, Pagination, Space, message } from 'antd';
 import { useEffect, useState } from 'react';
 import styles from './index.less';
 
@@ -18,7 +18,8 @@ const HomePage: React.FC = () => {
   const [page, setPage] = useState(1);
   const [bookList, setBookList] = useState<Book[]>([]);
   const [paginationTotal, setToal] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
+  const [pageSize, setPageSize] = useState(3);
+  const { user, getUser } = useModel('userModel');
 
   async function getData() {
     const response = await request('/api/book/search', {
@@ -43,37 +44,78 @@ const HomePage: React.FC = () => {
     setPageSize(pageSize);
   };
 
+  async function borrowBook(id: number) {
+    if (user) {
+      // 请求接口 借书
+      try {
+        const res = await request('api/user/borrow', {
+          data: {
+            id,
+          },
+          method: 'post',
+        });
+        message.success('去书架上领取吧，编号：' + res.data);
+
+        // 可借书籍数量-1
+        getData();
+        // user借书目录 +1本
+        getUser();
+      } catch {}
+    } else {
+      message.warning('请先登录');
+    }
+  }
+  function canBorrow(book: any): boolean {
+    // 用户已登录，且有剩余书籍，且用户没有借阅过
+    const isDisable =
+      !!user &&
+      book.identifierList.length - book.borrowers.length > 0 &&
+      !book.borrowers.find((borrower: any) => borrower.name === user.name);
+    return isDisable;
+  }
+
   return (
     <div className={styles.container}>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
         <Space size={[16, 20]} wrap>
           {bookList.map((item) => (
-            <Card
-              key={item._id}
-              hoverable
-              style={{ width: 236 }}
-              cover={
-                <img
-                  style={{ width: 236, height: 314 }}
-                  alt={item.title}
-                  src={item.image}
-                />
-              }
-            >
-              <Meta
-                title={item.title}
-                description={
-                  <div>
-                    <div style={{ float: 'left' }}>
-                      总数: {item.identifierList.length}
-                    </div>{' '}
-                    <div style={{ float: 'right' }}>
-                      剩余: {item.identifierList.length - item.borrowers.length}
-                    </div>
-                  </div>
+            <div key={item._id} className={styles.book}>
+              <Card
+                hoverable
+                className={styles.card}
+                cover={
+                  <img
+                    style={{ width: 236, height: 314 }}
+                    alt={item.title}
+                    src={item.image}
+                  />
                 }
-              />
-            </Card>
+              >
+                <Meta
+                  title={item.title}
+                  description={
+                    <div>
+                      <div style={{ float: 'left' }}>
+                        总数: {item.identifierList.length}
+                      </div>{' '}
+                      <div style={{ float: 'right' }}>
+                        剩余:{' '}
+                        {item.identifierList.length - item.borrowers.length}
+                      </div>
+                    </div>
+                  }
+                />
+              </Card>
+              <Button
+                className={styles.borrowBtn}
+                type="primary"
+                size="small"
+                onClick={() => borrowBook(item._id)}
+                disabled={!canBorrow(item)}
+              >
+                借阅
+              </Button>
+            </div>
           ))}
         </Space>
         <Pagination

@@ -1,5 +1,7 @@
-import { Outlet, useModel } from '@umijs/max';
-import { Button, Form, Input, Modal, Space } from 'antd';
+import IMGUser from '@/assets/images/user.png';
+import { Link, Outlet, useModel } from '@umijs/max';
+import type { MenuProps } from 'antd';
+import { Button, Dropdown, Form, Input, Modal, Space } from 'antd';
 import React, { useState } from 'react';
 import styles from './index.less';
 
@@ -8,7 +10,7 @@ const { Search } = Input;
 const IndexLayout: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
-  const { user, login } = useModel('userModel');
+  const { user, login, logout } = useModel('userModel');
 
   const showModal = () => {
     setOpen(true);
@@ -32,20 +34,45 @@ const IndexLayout: React.FC = () => {
     }
   };
 
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: <Link to="/user">个人资料</Link>,
+    },
+    {
+      key: '2',
+      label: (
+        <Link to="/" onClick={logout}>
+          退出
+        </Link>
+      ),
+    },
+  ];
+
   return (
     <div className={styles.pageContainer}>
       <header>
         <div className={styles.wrapper}>
-          <a href="/" className={styles.logo}>
+          <Link to="/" className={styles.logo}>
             鲲鹏
-          </a>
+          </Link>
           <Space align="center" className={styles.topRight}>
             <Search placeholder="搜索你喜欢的" style={{ width: 700 }} />
 
             {user ? (
-              <div>{user.name}</div>
+              <Dropdown
+                menu={{ items }}
+                placement="bottom"
+                arrow={{ pointAtCenter: true }}
+              >
+                <div className={styles.userAvatar}>
+                  <img src={IMGUser} alt="" />
+                </div>
+
+                {/* {user.name} */}
+              </Dropdown>
             ) : (
-              <div className="styles.beforeLogin">
+              <Space className="styles.beforeLogin">
                 <Button danger>注册</Button>
                 {/* <Modal
                   title="使用邮箱注册"
@@ -133,7 +160,7 @@ const IndexLayout: React.FC = () => {
                     </Form.Item>
                   </Form>
                 </Modal>
-              </div>
+              </Space>
             )}
           </Space>
         </div>

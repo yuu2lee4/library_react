@@ -1,7 +1,12 @@
 import { defineConfig } from '@umijs/max';
+import zhCN from 'antd/locale/zh_CN';
 
 export default defineConfig({
-  antd: {},
+  antd: {
+    configProvider: {
+      locale: zhCN,
+    }
+  },
   access: {},
   model: {},
   initialState: {},

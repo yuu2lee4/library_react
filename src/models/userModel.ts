@@ -1,4 +1,4 @@
-import { request } from '@umijs/max';
+import http from '@/utils/http';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 
@@ -12,7 +12,7 @@ export default function UserModel() {
 
   const login = async function (name: string, password: string) {
     // 请求登录接口  http://192.168.31.118:4040/api/user/login
-    const res = await request('/api/user/login', {
+    const res = await http('/api/user/login', {
       method: 'post',
       data: {
         name: name,
@@ -27,7 +27,7 @@ export default function UserModel() {
     // 判断cookie中用户是否已经登录。
     // 如果已经登录，需要请求接口 获取用户信息
     if (Cookies.get('isLogin')) {
-      const res = await request('/api/user', {
+      const res = await http('/api/user', {
         method: 'get',
       });
       setUser(res.data);
@@ -40,8 +40,7 @@ export default function UserModel() {
   }, []);
 
   const logout = async function () {
-    const res = await request('/api/user/logout');
-    console.log(res);
+    const res = await http('/api/user/logout');
     if (res.data) {
       // 清除cookie
       Cookies.remove('isLogin');

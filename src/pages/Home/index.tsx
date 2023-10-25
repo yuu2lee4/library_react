@@ -1,7 +1,8 @@
-import { request, useModel } from '@umijs/max';
+import { useModel } from '@umijs/max';
 import type { PaginationProps } from 'antd';
 import { Button, Card, Pagination, Space, message } from 'antd';
 import { useEffect, useState } from 'react';
+import http from '@/utils/http';
 import styles from './index.less';
 
 const { Meta } = Card;
@@ -22,7 +23,7 @@ const HomePage: React.FC = () => {
   const { user, getUser } = useModel('userModel');
 
   async function getData() {
-    const response = await request('/api/book/search', {
+    const response = await http('/api/book/search', {
       params: {
         pageSize,
         page,
@@ -47,20 +48,18 @@ const HomePage: React.FC = () => {
   async function borrowBook(id: number) {
     if (user) {
       // 请求接口 借书
-      try {
-        const res = await request('api/user/borrow', {
-          data: {
-            id,
-          },
-          method: 'post',
-        });
-        message.success('去书架上领取吧，编号：' + res.data);
+      const res = await http('api/user/borrow', {
+        data: {
+          id,
+        },
+        method: 'post',
+      });
+      message.success('去书架上领取吧，编号：' + res.data);
 
-        // 可借书籍数量-1
-        getData();
-        // user借书目录 +1本
-        getUser();
-      } catch {}
+      // 可借书籍数量-1
+      getData();
+      // user借书目录 +1本
+      getUser();
     } else {
       message.warning('请先登录');
     }
@@ -110,6 +109,7 @@ const HomePage: React.FC = () => {
                 className={styles.borrowBtn}
                 type="primary"
                 size="small"
+                danger
                 onClick={() => borrowBook(item._id)}
                 disabled={!canBorrow(item)}
               >

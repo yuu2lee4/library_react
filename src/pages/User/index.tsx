@@ -1,5 +1,6 @@
 import { PageContainer } from '@ant-design/pro-components';
-import { request, useModel } from '@umijs/max';
+import { useModel } from '@umijs/max';
+import http from '@/utils/http';
 import { Button, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -34,9 +35,9 @@ const UserPage: React.FC = () => {
         }
       }
 
-      // 请求接口  request默认是get方式传参，params用于querystring传参（即：查询字符串）
+      // 请求接口  http默认是get方式传参，params用于querystring传参（即：查询字符串）
       // 4种传参方式：payload、querystring、header请求头、path
-      const res = await request('/api/book/', {
+      const res = await http('/api/book/', {
         params: {
           ids,
         },
@@ -101,7 +102,7 @@ const UserPage: React.FC = () => {
       title: '操作',
       render: (text, record) => {
         const bookBack = async () => {
-          const res = await request('/api/user/return', {
+          const res = await http('/api/user/return', {
             // data表示payload负载，一般用于post传参。
             data: {
               id: record._id,

@@ -2,6 +2,7 @@ import { useModel } from '@umijs/max';
 import type { PaginationProps } from 'antd';
 import { Button, Card, Pagination, Space, message } from 'antd';
 import { useEffect, useState } from 'react';
+import classnames from 'classnames';
 import http from '@/utils/http';
 import styles from './index.less';
 
@@ -106,7 +107,7 @@ const HomePage: React.FC = () => {
                 />
               </Card>
               <Button
-                className={styles.borrowBtn}
+                className={classnames(styles.borrowBtn, {[styles.disabled]:!canBorrow(item)})}
                 type="primary"
                 size="small"
                 danger

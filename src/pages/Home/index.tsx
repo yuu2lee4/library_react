@@ -1,9 +1,9 @@
+import http from '@/utils/http';
 import { useModel } from '@umijs/max';
 import type { PaginationProps } from 'antd';
 import { Button, Card, Pagination, Space, message } from 'antd';
-import { useEffect, useState } from 'react';
 import classnames from 'classnames';
-import http from '@/utils/http';
+import { useEffect, useState } from 'react';
 import styles from './index.less';
 
 const { Meta } = Card;
@@ -20,14 +20,16 @@ const HomePage: React.FC = () => {
   const [page, setPage] = useState(1);
   const [bookList, setBookList] = useState<Book[]>([]);
   const [paginationTotal, setToal] = useState(1);
-  const [pageSize, setPageSize] = useState(3);
+  const [pageSize, setPageSize] = useState(2);
   const { user, getUser } = useModel('userModel');
+  const { title } = useModel('bookModel');
 
   async function getData() {
     const response = await http('/api/book/search', {
       params: {
         pageSize,
         page,
+        title,
       },
     });
     setBookList(response.data.results);
@@ -37,6 +39,14 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     getData();
   }, [page, pageSize]);
+
+  useEffect(() => {
+    if (page === 1) {
+      getData();
+      return;
+    }
+    setPage(1);
+  }, [title]);
 
   const onchange: PaginationProps['onChange'] = (page) => setPage(page);
   const onShowSizeChange: PaginationProps['onShowSizeChange'] = (
@@ -107,7 +117,9 @@ const HomePage: React.FC = () => {
                 />
               </Card>
               <Button
-                className={classnames(styles.borrowBtn, {[styles.disabled]:!canBorrow(item)})}
+                className={classnames(styles.borrowBtn, {
+                  [styles.disabled]: !canBorrow(item),
+                })}
                 type="primary"
                 size="small"
                 danger

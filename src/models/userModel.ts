@@ -10,6 +10,16 @@ interface User {
 export default function UserModel() {
   const [user, setUser] = useState<User | null>(null);
 
+  const register = async (values: object) => {
+    // 请求注册接口
+    const res = await http('/api/user/register', {
+      method: 'post',
+      data: values,
+    });
+    setUser(res.data);
+    Cookies.set('isLogin', 'true');
+  };
+
   const login = async function (name: string, password: string) {
     // 请求登录接口  http://192.168.31.118:4040/api/user/login
     const res = await http('/api/user/login', {
@@ -49,5 +59,5 @@ export default function UserModel() {
     }
   };
 
-  return { user, login, logout, getUser };
+  return { user, login, logout, getUser, register };
 }

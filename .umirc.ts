@@ -18,17 +18,20 @@ export default defineConfig({
   routes: [
     {
       path: '/',
-      component: '@/layouts/index',
+      component: '@/layouts/Home/index',
       layout: false,
       routes: [
         { path: '/', component: './Home' },
         { path: '/user', component: './User' },
       ],
     },
+    { path: '/login', component: './Login', layout: false, },
     {
-      path: '/login',
-      component: './Login',
-      layout: false,
+      path: '/admin',
+      name: '书籍管理',
+      routes: [
+        { name: '书籍列表', path: 'book/list', component: './BookList' },
+      ],
     },
     {
       name: '权限演示',

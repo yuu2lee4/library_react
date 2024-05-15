@@ -20,7 +20,7 @@ const HomePage: React.FC = () => {
   const [page, setPage] = useState(1);
   const [bookList, setBookList] = useState<Book[]>([]);
   const [paginationTotal, setToal] = useState(1);
-  const [pageSize, setPageSize] = useState(2);
+  const [pageSize, setPageSize] = useState(10);
   const { user, getUser } = useModel('userModel');
   const { title } = useModel('bookModel');
 
@@ -136,7 +136,7 @@ const HomePage: React.FC = () => {
           defaultCurrent={1}
           showSizeChanger
           onShowSizeChange={onShowSizeChange}
-          pageSizeOptions={[1, 2, 5]}
+          pageSizeOptions={[1, 2, 5, 10, 20]}
           onChange={onchange}
           total={paginationTotal}
           style={{ float: 'right' }}

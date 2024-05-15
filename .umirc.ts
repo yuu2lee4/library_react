@@ -5,14 +5,14 @@ export default defineConfig({
   antd: {
     configProvider: {
       locale: zhCN,
-    }
+    },
   },
   access: {},
   model: {},
   initialState: {},
   request: {},
   layout: {
-    title: '@umijs/max',
+    title: '鲲鹏后台管理',
   },
   metas: [{ name: 'referrer', content: 'no-referrer' }],
   routes: [
@@ -25,18 +25,14 @@ export default defineConfig({
         { path: '/user', component: './User' },
       ],
     },
-    { path: '/login', component: './Login', layout: false, },
+    { path: '/login', component: './Login', layout: false },
     {
       path: '/admin',
       name: '书籍管理',
       routes: [
         { name: '书籍列表', path: 'book/list', component: './BookList' },
+        { name: '书籍新增', path: 'book/add', component: './BookAdd' },
       ],
-    },
-    {
-      name: '权限演示',
-      path: '/access',
-      component: './Access',
     },
     {
       name: ' CRUD 示例',
@@ -46,7 +42,8 @@ export default defineConfig({
   ],
   proxy: {
     '/api': {
-      target: 'http://192.168.31.118:8888',
+      target: 'http://118.24.75.159:8888', // 腾讯云服务器
+      // target: 'http://localhost:8888',
       changeOrigin: true,
       pathRewrite: {},
     },

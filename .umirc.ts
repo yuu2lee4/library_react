@@ -7,6 +7,7 @@ export default defineConfig({
       locale: zhCN,
     },
   },
+  mako: {},
   access: {},
   model: {},
   initialState: {},
